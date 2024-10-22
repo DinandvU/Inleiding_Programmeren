@@ -1,7 +1,6 @@
 int levens = 5;
 int score = 0;
 boolean gameOver = false;
-int balSize = 75;
 
 ArrayList<Particle> particles = new ArrayList<Particle>();
 
@@ -26,16 +25,37 @@ void draw() {
         particles.remove(i);
       }
     }
-    fill(255);
-    textSize(30);
-    text("Score: " + score, 880, 30);
-    textSize(30);
-    text("Levens: " + levens, 10, 30);
+
     for (int i = 0; i < ballen.length; i++) {
       ballen[i].update();
       ballen[i].drawMe();
     }
   }
+  startScherm();
+  if ( levens <= 0) {
+    gameOver = true;
+    eindScherm();
+    noLoop();
+  }
+}
+
+void startScherm() {
+  fill(255);
+  textSize(30);
+  text("Score: " + score, 880, 30);
+  textSize(30);
+  text("Levens: " + levens, 10, 30);
+}
+
+void eindScherm() {
+  background(0, 0, 0);
+  fill(255);
+  textSize(100);
+  text("GAME OVER", 265, 450);
+  textSize(50);
+  text("Score: " + score, 425, 500);
+  textSize(50);
+  text("Press to restart", 350, 550);
 }
 
 void mousePressed() {
@@ -53,10 +73,9 @@ void startGame() {
   score = 0;
   levens = 5;
   gameOver = false;
-  balSize = 75;
   particles.clear();
   for (int i = 0; i < ballen.length; i++) {
-    ballen[i] = new Bal(random(75, 925), 0, 3, balSize);
+    ballen[i] = new Bal(random(75, 925), 0, 3, random(60, 90));
   }
   loop();
 }
@@ -65,9 +84,9 @@ class Bal {
   float x;
   float y;
   int speed = 5;
-  int grote = 50;
+  float grote = 50;
 
-  Bal(float x, float y, int speed, int grote) {
+  Bal(float x, float y, int speed, float grote) {
 
     this.x = x;
     this.y = y;
@@ -87,33 +106,17 @@ class Bal {
       x = random(75, 925);
       text("Levens: " + levens--, 10, 30);
     }
-    if ( levens <= 0) {
-      gameOver = true;
-      background(0, 0, 0);
-      y = 2000;
-      fill(255);
-      textSize(100);
-      text("GAME OVER", 265, 450);
-      textSize(50);
-      text("Score: " + score, 425, 500);
-      textSize(50);
-      text("Press to restart", 350, 550);
-      noLoop();
-    }
 
-    if (score >= 15) {
+    if (score >= 25) {
       speed = 7;
-      balSize = 85;
     }
 
-    if ( score >= 30) {
+    if ( score >= 50) {
       speed = 10;
-      balSize = 100;
     }
 
-    if (score >= 50) {
+    if (score >= 75) {
       speed = 15;
-      balSize = 125;
     }
   }
 
@@ -122,6 +125,11 @@ class Bal {
       score++;
       generateParticles();
       resetObject();
+      if (grote <= 70) {
+        score = score + 2;
+      } else if (grote <= 80) {
+        score = score + 1;
+      }
     }
   }
 
