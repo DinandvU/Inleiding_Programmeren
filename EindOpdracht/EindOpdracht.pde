@@ -103,7 +103,7 @@ class Bal {
     y = y + speed;
     if (y >= 1000) {
       y = 0;
-      x = random(75, 925);
+      x = random(90, 910);
       text("Levens: " + levens--, 10, 30);
     }
 
